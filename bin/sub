@@ -50,7 +50,9 @@ function call-main {
   save-function flags_help shflags-help
   function flags_help { sub-help; }
 
-  options
+  if declare -F options >/dev/null; then
+    options
+  fi
    
   FLAGS_HELP="$(date)"
 
