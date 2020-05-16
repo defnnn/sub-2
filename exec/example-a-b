@@ -1,11 +1,7 @@
 #!/bin/bash
 
 function options {
-  echo options
-}
-
-function help {
-  echo help
+  true
 }
 
 function main {

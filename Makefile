@@ -9,3 +9,4 @@ test-inner:
 	@time bin/example a
 	@time bin/example a b
 	@time bin/example a b comment
+	@time bin/example a b --help

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# usage: example
+# USAGE: example [flags] args
 #
-# This is just an exammple
+# This is an example
 
 function options {
   DEFINE_string name 'world' "somebody's name" n
