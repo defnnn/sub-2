@@ -42,7 +42,6 @@ function call-main {
   save-function flags_help shflags-help
   function flags_help { sub-help; }
 
-  DEFINE_string name 'world' "somebody's name" n
   options
    
   FLAGS_HELP="$(date)"
@@ -50,7 +49,7 @@ function call-main {
   FLAGS "$@" || return $?
   eval set -- "${FLAGS_ARGV}"
 
-  sdebug "exec: main $@"
+  sdebug "call: main $@"
   main "$@"
   return $?
 }
@@ -80,7 +79,7 @@ function sub-main {
 
   shift
   sdebug "exec: ${bare_cmd}-${sub_cmd} $@"
-  "${bare_cmd}-${sub_cmd}" "$@"
+  exec "${bare_cmd}-${sub_cmd}" "$@"
   return $?
 }
 
