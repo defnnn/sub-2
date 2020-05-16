@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>kiki</title>
+    <title>sub</title>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -90,11 +90,49 @@
     <main>
         <article>
             <header>
-                <h1>kiki</h1>
+                <h1>sub</h1>
             </header>
             <section class="content">
-                <p>Supposed to be something here&hellip;</p>
+                <p><strong>sub</strong> is a bash library to manage a set of commands and sub-commands (like git).  It mandates cli options and help with shflags.</p>
+<h3 id="requirements">Requirements</h3>
+<p>Uses:</p>
+<ul>
+<li>bash</li>
+<li>gnu getopt</li>
+</ul>
+<p>Must have <code>sub</code>, <code>shflags</code>, commands, and sub-commands in path.</p>
+<h3 id="help-content">Help content</h3>
+<p>Option <code>--help</code> is handled by <code>sub</code>.  The help content is the first contiguous block of comments after the shebang.  The line must be prefixed with a hash and a space, unless it a blank line (which still requires a leading hash).</p>
+<p>If the help content starts with <code>USAGE:</code> then <code>sub</code> won&rsquo;t generate a usage line.</p>
+<h3 id="example-command">Example command</h3>
+<p>In <code>bin/example</code>, to be called as <code>example</code>:</p>
+<pre><code>#!/bin/bash
 
+# This is an example
+
+function options {
+  DEFINE_string name 'world' &quot;somebody's name&quot; n
+}
+
+function main {
+  echo &quot;example: ${FLAGS_name:-}: $@&quot;
+}
+
+source sub &quot;$0&quot; &quot;$@&quot;
+</code></pre><h3 id="example-sub-command">Example sub-command</h3>
+<p>In <code>exec/example-a</code>, to be called as <code>example a</code></p>
+<pre><code>#!/bin/bash
+
+# USAGE: example a [flags] args
+#
+# This is another example
+
+function main {
+  echo &quot;a: $@&quot;
+}
+
+source sub &quot;$0&quot; &quot;$@&quot;
+</code></pre>
             </section>
         </article>
     </main>
