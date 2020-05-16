@@ -9,7 +9,17 @@ function sdebug {
 }
 
 function call-main {
+  if [[ -x /usr/local/opt/gnu-getopt/bin/getopt ]]; then
+    export FLAGS_GETOPT_CMD=/usr/local/opt/gnu-getopt/bin/getopt
+  fi
+
   source shflags
+
+  DEFINE_string name 'world' "somebody's name" n
+
+  FLAGS "$@" || return $?
+  eval set -- "${FLAGS_ARGV}"
+
   sdebug "exec: main $@"
   main "$@"
   return $?
