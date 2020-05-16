@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function main {
+  echo "example: $@"
+}
+
+source sub "$0" "$@"

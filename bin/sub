@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -efu
+
+function sdebug {
+  if [[ -n "${DEBUG:-}" ]]; then
+    sdebug "$@" 1>&2
+  fi
+}
+
+function sub-main {
+  local cmd="$1"; shift
+  local bare_cmd="${cmd##*/}" 
+
+  sdebug
+  sdebug "cmd: $cmd"
+  sdebug "bare-cmd; $bare_cmd"
+  sdebug "args: $@"
+
+  if [[ "$#" == 0 ]]; then
+    sdebug "exec: main"
+    main
+    return $?
+  fi
+
+  local sub_cmd="$1"
+
+  sdebug "finding: ${bare_cmd}-${sub_cmd}"
+  found_cmd="$(type -P "${bare_cmd}-${sub_cmd}" || true)"
+  if [[ -z "${found_cmd}" ]]; then
+    sdebug "exec: main $@"
+    main "$@"
+    return $?
+  fi
+
+  shift
+  sdebug "exec: ${bare_cmd}-${sub_cmd} $@"
+  "${bare_cmd}-${sub_cmd}" "$@"
+  return $?
+}
+
+sub-main "$@"
