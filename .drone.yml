@@ -41,7 +41,4 @@ steps:
 - name: local
   image: letfn/drone-hugo
 
-depends_on:
-- build
-
 ...
