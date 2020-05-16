@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-function options {
-  echo options
-}
+# usage: example
+#
+# This is just an exammple
 
-function help {
-  echo help
+function options {
+  true
 }
 
 function main {

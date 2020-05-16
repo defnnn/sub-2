@@ -8,6 +8,30 @@ function sdebug {
   fi
 }
 
+function save-function {
+    local original="$(declare -f $1)"
+    local override="$2${original#$1}"
+    eval "$override"
+}
+
+# https://stackoverflow.com/questions/38972736/how-to-print-lines-between-two-patterns-inclusive-or-exclusive-in-sed-awk-or
+function sub-help {
+  FLAGS_HELP="$(awk '
+    BEGIN   {first=1}
+    /^# /   {if (first) {flag=1; first=0}}
+    /^[^#]/ {flag=0}
+    {gsub(/^#/, "")}
+    {gsub(/^ /, "")}
+    flag
+  ' "$0")"
+
+  FLAGS_HELP="${FLAGS_HELP:+${FLAGS_HELP}
+}"
+
+  shflags-help
+  exit $?
+}
+
 function call-main {
   if [[ -x /usr/local/opt/gnu-getopt/bin/getopt ]]; then
     export FLAGS_GETOPT_CMD=/usr/local/opt/gnu-getopt/bin/getopt
@@ -15,8 +39,13 @@ function call-main {
 
   source shflags
 
+  save-function flags_help shflags-help
+  function flags_help { sub-help; }
+
   DEFINE_string name 'world' "somebody's name" n
   options
+   
+  FLAGS_HELP="$(date)"
 
   FLAGS "$@" || return $?
   eval set -- "${FLAGS_ARGV}"
