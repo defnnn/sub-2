@@ -16,6 +16,7 @@ function call-main {
   source shflags
 
   DEFINE_string name 'world' "somebody's name" n
+  options
 
   FLAGS "$@" || return $?
   eval set -- "${FLAGS_ARGV}"
