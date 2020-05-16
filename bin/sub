@@ -8,6 +8,13 @@ function sdebug {
   fi
 }
 
+function call-main {
+  source shflags
+  sdebug "exec: main $@"
+  main "$@"
+  return $?
+}
+
 function sub-main {
   local cmd="$1"; shift
   local bare_cmd="${cmd##*/}" 
@@ -18,8 +25,7 @@ function sub-main {
   sdebug "args: $@"
 
   if [[ "$#" == 0 ]]; then
-    sdebug "exec: main"
-    main
+    call-main "$@"
     return $?
   fi
 
@@ -28,8 +34,7 @@ function sub-main {
   sdebug "finding: ${bare_cmd}-${sub_cmd}"
   found_cmd="$(type -P "${bare_cmd}-${sub_cmd}" || true)"
   if [[ -z "${found_cmd}" ]]; then
-    sdebug "exec: main $@"
-    main "$@"
+    call-main "$@"
     return $?
   fi
 
