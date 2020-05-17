@@ -1,9 +1,5 @@
 #!/bin/bash
 
-function options {
-  true
-}
-
 function main {
   echo "a: $@"
 }

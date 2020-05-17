@@ -27,7 +27,7 @@ edit: # Live edit docs
 	docker-compose -f docker-compose.docs.yml run --rm docs
 
 test: # Run tests
-	@env PATH="$(PATH):$(PWD)/bin:$(PWD)/exec" $(MAKE) test-inner
+	@env PATH="$(PWD)/bin:$(PWD)/exec:$(PATH)" $(MAKE) test-inner
 
 test-inner:
 	@time bin/example

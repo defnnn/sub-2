@@ -4,7 +4,7 @@ set -efu
 
 function sdebug {
   if [[ -n "${DEBUG:-}" ]]; then
-    sdebug "$@" 1>&2
+    echo "$@" 1>&2
   fi
 }
 
@@ -41,28 +41,31 @@ function sub-help {
 }
 
 function call-main {
-  if [[ -x /usr/local/opt/gnu-getopt/bin/getopt ]]; then
-    export FLAGS_GETOPT_CMD=/usr/local/opt/gnu-getopt/bin/getopt
-  fi
-
-  source shflags
-
-  save-function flags_help shflags-help
-  function flags_help { sub-help; }
-
   if declare -F options >/dev/null; then
+    if [[ -x /usr/local/opt/gnu-getopt/bin/getopt ]]; then
+      export FLAGS_GETOPT_CMD=/usr/local/opt/gnu-getopt/bin/getopt
+    fi
+
+    source shflags
+
+    save-function flags_help shflags-help
+    function flags_help { sub-help; }
+
     options
+
+    POSIXLY_CORRECT=1 FLAGS "$@" || return $?
+    unset POSIXLY_CORRECT
+    eval set -- "${FLAGS_ARGV}"
   fi
    
-  FLAGS_HELP="$(date)"
-
-  POSIXLY_CORRECT=1 FLAGS "$@" || return $?
-  unset POSIXLY_CORRECT
-  eval set -- "${FLAGS_ARGV}"
-
   sdebug "call: main $@"
-  main "$@"
-  return $?
+  if declare -F main >/dev/null; then
+    main "$@"
+    return $?
+  else
+    sdebug "missing: main $@"
+    return 1
+  fi
 }
 
 function sub-main {
@@ -87,10 +90,11 @@ function sub-main {
     call-main "$@"
     return $?
   fi
+  sdebug "found: ${found_cmd}"
 
   shift
-  sdebug "exec: ${bare_cmd}-${sub_cmd} $@"
-  exec "${bare_cmd}-${sub_cmd}" "$@"
+  sdebug "exec: ${found_cmd} $@"
+  exec "${found_cmd}" "$@"
   return $?
 }
 
