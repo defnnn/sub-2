@@ -30,13 +30,17 @@ test: # Run tests
 	@env PATH="$(PWD)/bin:$(PWD)/exec:$(PATH)" $(MAKE) test-inner
 
 test-inner:
-	@time bin/example
-	@time bin/example -n defn
-	@time bin/example --name defn
-	@time bin/example --help
+	@time example
+	@time example -n defn
+	@time example --name defn
+	@time example --help
 	@echo
-	@time bin/example a
+	@time example a
 	@echo
-	@time bin/example a b
-	@time bin/example a b comment
-	@time bin/example a b --help
+	@time example a b
+	@echo
+	@time example a b c
+	@echo
+	@time example a b c d
+	@time example a b c d comment
+	@time example a b c d --help

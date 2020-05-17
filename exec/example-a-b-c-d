@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function options {
+  true
+}
+
+function main {
+  echo "d: $@"
+}
+
+source sub "$0" "$@"
