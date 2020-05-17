@@ -57,7 +57,7 @@ function call-main {
     unset POSIXLY_CORRECT
     eval set -- "${FLAGS_ARGV}"
   fi
-   
+
   sdebug "call: main $@"
   if declare -F main >/dev/null; then
     main "$@"
@@ -85,7 +85,10 @@ function sub-main {
   local sub_cmd="$1"
 
   sdebug "finding: ${bare_cmd}-${sub_cmd}"
-  found_cmd="$(type -P "${bare_cmd}-${sub_cmd}" || true)"
+  set +e
+  found_cmd="$(type -P "${bare_cmd}-${sub_cmd}")"
+  set -e
+
   if [[ -z "${found_cmd}" ]]; then
     call-main "$@"
     return $?

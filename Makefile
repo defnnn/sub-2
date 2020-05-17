@@ -34,7 +34,9 @@ test-inner:
 	@time bin/example -n defn
 	@time bin/example --name defn
 	@time bin/example --help
+	@echo
 	@time bin/example a
+	@echo
 	@time bin/example a b
 	@time bin/example a b comment
 	@time bin/example a b --help
