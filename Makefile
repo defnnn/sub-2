@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: docs
+.PHONY: docs test
 
 menu:
 	@perl -ne 'printf("%10s: %s\n","$$1","$$2") if m{^([\w+-]+):[^#]+#\s(.+)$$}' Makefile
@@ -27,7 +27,7 @@ edit: # Live edit docs
 	docker-compose -f docker-compose.docs.yml run --rm docs
 
 test: # Run tests
-	@env PATH="$(PWD)/bin:$(PWD)/exec:$(PATH)" $(MAKE) test-inner
+	@env PATH="$(PWD)/bin:$(PWD)/test:$(PATH)" $(MAKE) test-inner
 
 test-inner:
 	@time example
