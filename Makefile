@@ -1,3 +1,6 @@
+# Copyright 2020 Authors of sub
+# SPDX-License-Identifier: Apache-2.0
+
 SHELL := /bin/bash
 
 .PHONY: docs test
